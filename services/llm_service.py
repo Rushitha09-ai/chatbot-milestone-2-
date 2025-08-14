@@ -5,7 +5,7 @@ import time
 from config import Config
 
 class LLMService:
-    """Service class for handling LLM API communications."""
+    """Enhanced service class for handling multiple LLM models."""
     
     def __init__(self):
         """Initialize the LLM service with API configuration."""
@@ -15,14 +15,58 @@ class LLMService:
         
         self.client = openai.OpenAI(api_key=Config.OPENAI_API_KEY)
         self.logger = logging.getLogger(__name__)
+        
+        # Available models with their configurations
+        self.models = {
+            "gpt-3.5-turbo": {
+                "name": "GPT-3.5 Turbo",
+                "description": "Fast and efficient for most tasks",
+                "cost_per_1k": 0.0015,
+                "max_tokens": 4096,
+                "supports_functions": True
+            },
+            "gpt-4": {
+                "name": "GPT-4",
+                "description": "Most capable model for complex tasks",
+                "cost_per_1k": 0.03,
+                "max_tokens": 8192,
+                "supports_functions": True
+            },
+            "gpt-4-turbo": {
+                "name": "GPT-4 Turbo",
+                "description": "Latest GPT-4 with improved speed",
+                "cost_per_1k": 0.01,
+                "max_tokens": 128000,
+                "supports_functions": True
+            }
+        }
     
-    def send_message(self, message: str, model: str = "gpt-3.5-turbo") -> Dict[str, Any]:
+    def get_available_models(self) -> Dict[str, Dict]:
+        """Return available models and their configurations."""
+        return self.models
+    
+    def estimate_cost(self, message: str, model: str = "gpt-3.5-turbo") -> float:
+        """Estimate the cost of a message for a given model."""
+        if model not in self.models:
+            return 0.0
+        
+        # Rough token estimation (1 token  4 characters)
+        estimated_tokens = len(message) / 4
+        cost_per_1k = self.models[model]["cost_per_1k"]
+        return (estimated_tokens / 1000) * cost_per_1k
+    
+    def send_message(self, message: str, model: str = "gpt-3.5-turbo", 
+                    temperature: float = 0.7, max_tokens: int = 1000,
+                    system_prompt: str = None) -> Dict[str, Any]:
         """
         Send a message to the LLM and return the response.
         
         Args:
             message (str): The user's message
             model (str): The OpenAI model to use
+            temperature (float): Response creativity (0.0-2.0)
+            max_tokens (int): Maximum response length
+            system_prompt (str): Optional system prompt for behavior
             
         Returns:
             Dict containing 'success', 'response', 'error', 'response_time'
@@ -43,16 +87,25 @@ class LLMService:
                 "response_time": 0
             }
         
+        # Validate model
+        if model not in self.models:
+            model = "gpt-3.5-turbo"  # Fallback to default
+        
+        # Prepare messages
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        messages.append({"role": "user", "content": message})
+        
         start_time = time.time()
         
         for attempt in range(Config.MAX_RETRIES):
             try:
                 response = self.client.chat.completions.create(
                     model=model,
-                    messages=[
-                        {"role": "user", "content": message}
-                    ],
-                    max_tokens=1000,
+                    messages=messages,
+                    max_tokens=min(max_tokens, self.models[model]["max_tokens"]),
+                    temperature=max(0.0, min(2.0, temperature)),  # Clamp temperature
                     timeout=Config.API_TIMEOUT
                 )
                 
@@ -65,7 +118,8 @@ class LLMService:
                         "error": None,
                         "response_time": response_time,
                         "model_used": model,
-                        "tokens_used": response.usage.total_tokens if response.usage else None
+                        "tokens_used": response.usage.total_tokens if response.usage else None,
+                        "estimated_cost": self.estimate_cost(message, model)
                     }
                 else:
                     return {
@@ -116,6 +170,6 @@ class LLMService:
                     }
                 time.sleep(1)
     
-    def test_connection(self) -> Dict[str, Any]:
+    def test_connection(self, model: str = "gpt-3.5-turbo") -> Dict[str, Any]:
         """Test the API connection with a simple message."""
-        return self.send_message("Hello! This is a connection test.")
+        return self.send_message("Hello! This is a connection test.", model=model)

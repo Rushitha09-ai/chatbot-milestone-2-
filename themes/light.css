@@ -1,0 +1,42 @@
+﻿/* Simple Light Theme */
+.stApp {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.stSidebar {
+    background-color: #F0F2F6;
+}
+
+.stSelectbox > div > div {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.stTextInput > div > div > input {
+    background-color: #FFFFFF;
+    color: #000000;
+    border: 1px solid #CCCCCC;
+}
+
+.stTextArea > div > div > textarea {
+    background-color: #FFFFFF;
+    color: #000000;
+    border: 1px solid #CCCCCC;
+}
+
+.stButton > button {
+    background-color: #FF4B4B;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.stExpander {
+    background-color: #F8F9FA;
+    border: 1px solid #E0E0E0;
+}
+
+.stChatMessage {
+    background-color: #F8F9FA;
+}

@@ -1,0 +1,40 @@
+{
+  "id": "20250814_164330",
+  "title": "Chat August 14 at 04:43 PM",
+  "created_at": "2025-08-14T16:43:30.240085",
+  "updated_at": "2025-08-14T16:43:58.082890",
+  "messages": [
+    {
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2025-08-14T16:43:43.436099",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! How can I assist you today?",
+      "timestamp": "2025-08-14T16:43:44.911626",
+      "metadata": {
+        "response_time": "1.45s",
+        "model_used": "gpt-3.5-turbo",
+        "tokens_used": 17
+      }
+    },
+    {
+      "role": "user",
+      "content": "what is AI",
+      "timestamp": "2025-08-14T16:43:56.044226",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "AI, or artificial intelligence, is the development of computer systems that are able to perform tasks that typically require human intelligence, such as visual perception, speech recognition, decision-making, and language translation. AI involves the use of algorithms and machine learning techniques to enable computers to learn from data, recognize patterns, and make decisions without explicit programming. AI technology is used in a wide range of applications, including virtual assistants, autonomous vehicles, fraud detection, healthcare diagnosis, and many others.",
+      "timestamp": "2025-08-14T16:43:58.082840",
+      "metadata": {
+        "response_time": "2.01s",
+        "model_used": "gpt-3.5-turbo",
+        "tokens_used": 105
+      }
+    }
+  ]
+}

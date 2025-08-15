@@ -1,0 +1,24 @@
+{
+  "id": "20250814_164337",
+  "title": "Chat August 14 at 04:43 PM",
+  "created_at": "2025-08-14T16:43:37.535399",
+  "updated_at": "2025-08-14T16:44:14.398047",
+  "messages": [
+    {
+      "role": "user",
+      "content": "llm full form",
+      "timestamp": "2025-08-14T16:44:13.323810",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "LLM stands for Master of Laws. It is a postgraduate degree in law that is typically pursued by individuals who already have a law degree and want to specialize in a specific area of law or gain advanced legal knowledge.",
+      "timestamp": "2025-08-14T16:44:14.398007",
+      "metadata": {
+        "response_time": "1.06s",
+        "model_used": "gpt-3.5-turbo",
+        "tokens_used": 55
+      }
+    }
+  ]
+}
